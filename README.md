@@ -6,6 +6,7 @@ ToDo:
 * Character leveling (leveling should increase just health for now)
 * Weapon levels (strong weapons from stronger enemies)
 * Revival system for your hero (maybe items that drop from enemies or just a button you click)
+* Save Game to browser (html5 webstorage maybe)
 * more...
 
 Done:

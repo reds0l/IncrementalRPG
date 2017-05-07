@@ -34,12 +34,15 @@ class Weapon {
 /**
  * Character Class
  */
-class Character {
+class Hero {
     /**
      * Constructor
      */
     constructor() {
         this.name = '';
+        this.level = 0;
+        this.curXP = 0;
+        this.maxXP = 2;
         this.curHealth = 25;
         this.maxHealth = 25;
         this.defense = 5;
@@ -64,13 +67,52 @@ class Character {
     }
 
     /**
+     * Update XP and level based on passed amount
+     * @param {int} xp - amount of xp to add
+     */
+    updateXP(xp) {
+        this.curXP = this.curXP + xp;
+        if (this.curXP >= this.maxXP) {
+            console.log('Level Up');
+            this.curXP = 0;
+            this.maxXP = this.maxXP * 2;
+            this.levelUp();
+        }
+    }
+
+    /**
+     * level up
+     */
+    levelUp() {
+        this.level++;
+        this.maxHealth = this.maxHealth + 4 * this.level;
+        this.curHealth = this.maxHealth;
+    }
+}
+
+/**
+ * Enemy Class
+ */
+class Enemy {
+    /**
+     * Constructor
+     */
+    constructor() {
+        this.name = '';
+        this.curHealth = 5;
+        this.maxHealth = 5;
+        this.defense = 1;
+        this.attack = 3;
+    }
+
+    /**
      * set the Stats for this character
      * @param {int} curHealth - current health
      * @param {int} maxHealth - max health
      * @param {int} defense - defense
-     * @param {Weapon} weapon - weapon
+     * @param {Weapon} attack - attack
      */
-    setStats(curHealth, maxHealth, defense, weapon) {
+    setStats(curHealth, maxHealth, defense, attack) {
         if(curHealth != null) {
             this.curHealth = curHealth;
         }
@@ -80,8 +122,8 @@ class Character {
         if(defense != null) {
             this.defense = defense;
         }
-        if(weapon != null) {
-            this.weapon = weapon;
+        if(attack != null) {
+            this.attack = attack;
         }
     }
 }
@@ -111,8 +153,8 @@ let BATTLEFLAG = false;
 let level = 1;
 let inventory = [];
 
-let hero = new Character();     // hero character
-let enemy = new Character();    // enemy character
+let hero = new Hero();     // hero character
+let enemy = new Enemy();    // enemy character
 
 /**
  * *****************************************************
@@ -197,12 +239,12 @@ function generateWeaponName() {
  * Generates an enemy
  */
 function generateEnemy() {
-    enemy = new Character();
-    enemy.setStats(5*level, 5*level, 1*level, generateWeapon());
     // Reset enemy death if not reset
     if ($(".dead-enemy").hasClass("dead-animate")) {
         resetEnemyDeath();
     }
+    enemy = new Enemy();
+    enemy.setStats(5*level, 5*level, 1*level, 3*level);
 }
 
 /**
@@ -219,16 +261,25 @@ function isDead(x) {
 }
 
 /**
- * Updates character stuff*
- * @param {Character} hero - user's character
- * @param {Character} enemy - enemy character
+ * If character defeats enemy
+ */
+function battleVictory() {
+    console.log('Victory');
+    let xp = Math.trunc((Math.random() * 2) + 1);
+    console.log('Gain: ' + xp + 'xp');
+    // give hero xp (eventually replace with hero class xp function)
+    hero.updateXP(xp);
+}
+
+/**
+ * Updates character stuff
  */
 function updateBattle() {
     if (BATTLEFLAG) {
         console.log('Battle Flag Active');
         // calculate damage
         let heroDamage = hero.weapon.attack - enemy.defense;
-        let enemyDamage = enemy.weapon.attack - hero.defense;
+        let enemyDamage = enemy.attack - hero.defense;
         if (heroDamage < 1) {
             heroDamage = 1;
         }
@@ -245,14 +296,13 @@ function updateBattle() {
             console.log('Enemy Dead');
             enemy.curHealth = 0;
             BATTLEFLAG = false;
+            battleVictory();
         }
     }
 }
 
 /**
  * Updates character stuff
- * @param {Character} hero - user's character
- * @param {Character} enemy - enemy character
  */
 function updateCharacter() {
     // update character stats
@@ -261,13 +311,14 @@ function updateCharacter() {
 
 /**
  * Updates view stuff*
- * @param {Character} hero - user's character
- * @param {Character} enemy - enemy character
  */
 function updateView() {
     // Update character view info
     $('#characterHealth').html('Health: ' + hero.curHealth + '/'
             + hero.maxHealth);
+    $('#characterLevel').html('Level: ' + hero.level);
+    $('#characterXP').html('XP: ' + hero.curXP + '/'
+            + hero.maxXP);
     $('#characterAttack').html('Attack: ' + hero.weapon.attack);
     $('#characterDefense').html('Defense: ' + hero.defense);
     $('#characterWeapon').html('Weapon: ' + hero.weapon.title);
@@ -281,7 +332,7 @@ function updateView() {
     }
     $('#enemyHealth').html('Health: ' + enemy.curHealth + '/'
             + enemy.maxHealth);
-    $('#enemyAttack').html('Attack: ' + enemy.weapon.attack);
+    $('#enemyAttack').html('Attack: ' + enemy.attack);
     $('#enemyDefense').html('Defense: ' + enemy.defense);
 
     // Update inventory view info
