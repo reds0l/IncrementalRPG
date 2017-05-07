@@ -42,7 +42,7 @@ class Hero {
         this.name = '';
         this.level = 0;
         this.curXP = 0;
-        this.maxXP = 10;
+        this.maxXP = 2;
         this.curHealth = 25;
         this.maxHealth = 25;
         this.defense = 5;
@@ -66,6 +66,28 @@ class Hero {
         }
     }
 
+    /**
+     * Update XP and level based on passed amount
+     * @param {int} xp - amount of xp to add
+     */
+    updateXP(xp) {
+        this.curXP = this.curXP + xp;
+        if (this.curXP >= this.maxXP) {
+            console.log('Level Up');
+            this.curXP = 0;
+            this.maxXP = this.maxXP * 2;
+            this.levelUp();
+        }
+    }
+
+    /**
+     * level up
+     */
+    levelUp() {
+        this.level++;
+        this.maxHealth = this.maxHealth + 4 * this.level;
+        this.curHealth = this.maxHealth;
+    }
 }
 
 /**
@@ -238,10 +260,10 @@ function isDead(x) {
  */
 function battleVictory() {
     console.log('Victory');
-    let xp = 1;
+    let xp = Math.trunc((Math.random() * 2) + 1);
     console.log('Gain: ' + xp + 'xp');
     // give hero xp (eventually replace with hero class xp function)
-    hero.curXP = hero.curXP + xp;
+    hero.updateXP(xp);
 }
 
 /**
