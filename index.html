@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles/w3.css">
+        <script src="src/jquery-3.2.1.js"></script> 
+        <script src="src/main.js"></script> 
+    </head>
+    <body>
+        <header id="header" class="w3-container w3-blue-grey">
+            <button id="btn1" class="w3-bar-item w3-button"> + </button>
+            <button id="btn2" class="w3-bar-item w3-button"> Find Enemy </button>
+            <button id="btn3" class="w3-bar-item w3-button"> Start Battle </button>
+        </header>
+        <div class="w3-row">
+            <div class="w3-quarter w3-padding">
+                <div id="inventory" class="w3-card-2 w3-container" style="min-height:460px">
+                    <h3>Inventory:</h3>
+                </div>
+            </div>
+            <div class="w3-quarter w3-padding">
+                <div id="character" class="w3-card-2 w3-container" style="min-height:460px">
+                    <h3>Character</h3>
+                    <p id="characterHealth">Health: ??/??</p>
+                    <p id="characterAttack">Attack: ??</p>
+                    <p id="characterDefense">Defense: ??</p>
+                    <p id="characterWeapon">Weapon: ??</p>
+                    <p id="characterRarity">Rarity: ??</p>
+                </div>
+            </div>
+            <div class="w3-quarter w3-padding">
+                <div id="enemy" class="w3-card-2 w3-container" style="min-height:460px">
+                    <h3>Enemy:</h3>
+                    <p id="enemyHealth">Health: ??/??</p>
+                    <p id="enemyAttack">Attack: ??</p>
+                    <p id="enemyDefense">Defense: ??</p>
+                </div>
+            </div>
+            <div class="w3-quarter w3-padding">
+                <div id="log" class="w3-card-2 w3-container" style="min-height:460px">
+                    <h3>Log:</h3>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
