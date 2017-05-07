@@ -1,0 +1,32 @@
+.dead-enemy {
+    width: 100%;
+    opacity: 0;
+    position: relative;
+    top: 75px;
+    right: 10px;
+}
+
+.dead-animate {
+    animation: dead-animation .3s linear forwards;
+    -webkit-transform:rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+#enemy {
+    position: absolute;
+}
+
+@keyframes dead-animation {
+    from {
+        opacity: 0;
+        transform: translateY(-400px) rotate(180deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(10deg);
+    }
+}

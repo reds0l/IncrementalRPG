@@ -127,6 +127,7 @@ let enemy = new Character();    // enemy character
  */
 function startBattle() {
     BATTLEFLAG = true;
+
 }
 
 /**
@@ -198,6 +199,10 @@ function generateWeaponName() {
 function generateEnemy() {
     enemy = new Character();
     enemy.setStats(5*level, 5*level, 1*level, generateWeapon());
+    // Reset enemy death if not reset
+    if ($(".dead-enemy").hasClass("dead-animate")) {
+        resetEnemyDeath();
+    }
 }
 
 /**
@@ -238,6 +243,7 @@ function updateBattle() {
             BATTLEFLAG = false;
         } else if (isDead(enemy)) {
             console.log('Enemy Dead');
+            enemy.curHealth = 0;
             BATTLEFLAG = false;
         }
     }
@@ -268,6 +274,11 @@ function updateView() {
     $('#characterRarity').html('Rarity: ' + hero.weapon.rarity);
 
     // Update enemy view info
+    if (isDead(enemy)) {
+        if (!$('.dead-enemy').hasClass('dead-animate')) {
+            startEnemyDeath();
+        }
+    }
     $('#enemyHealth').html('Health: ' + enemy.curHealth + '/'
             + enemy.maxHealth);
     $('#enemyAttack').html('Attack: ' + enemy.weapon.attack);
@@ -324,6 +335,20 @@ function setup() {
 }
 
 /**
+ * Drops the enemy dead symbol
+ */
+function startEnemyDeath(x) {
+    $(".dead-enemy").addClass("dead-animate");
+}
+
+/**
+ * Reset enemy death
+ */
+function resetEnemyDeath(x) {
+    $(".dead-enemy").removeClass("dead-animate");
+}
+
+/**
  * *****************************************************
  * Section (#4): Main
  * This section contains the main code to run
@@ -334,4 +359,5 @@ $(document).ready(function() {
     console.log('Info: Starting Game');
     setup();
     setInterval(update, 1000);
+
 });
