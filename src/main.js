@@ -400,6 +400,28 @@ function resetEnemyDeath(x) {
 }
 
 /**
+ * Username form submit handler
+ */
+function handleUsernameSubmit() {
+    var modal = $("#userNameModal");
+    var field = $("#recipient-name");
+    var form_group = $("#username-form-group");
+    var name = $("#recipient-name").val();
+    var error_field = $(".username-error-msg");
+    if (name !== "Craig" && name !== "craig") {
+        form_group.addClass("has-error");
+        var choices = ["Not a worthy name.", "No.", "Try again.", "Really."];
+        var choice = choices[Math.floor(Math.random() * choices.length)];
+        error_field.text(choice);
+    } else {
+        modal.modal("hide");
+        console.log('Info: Starting Game');
+        setup();
+        setInterval(update, 1000);
+    }
+}
+
+/**
  * *****************************************************
  * Section (#4): Main
  * This section contains the main code to run
@@ -407,8 +429,11 @@ function resetEnemyDeath(x) {
  * *****************************************************
  */
 $(document).ready(function() {
-    console.log('Info: Starting Game');
-    setup();
-    setInterval(update, 1000);
-
+    // Show Choose username modal
+    $("#userNameModal").modal("show");
+    $("#userNameModalSubmitButton").click(handleUsernameSubmit);
+    $("#username-submit-form").submit(function(e) {
+        e.preventDefault();
+        handleUsernameSubmit();
+    });
 });

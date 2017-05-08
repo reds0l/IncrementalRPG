@@ -2,8 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="styles/styles.css">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/styles.css">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"> </script>
@@ -48,5 +52,29 @@
                 </div>
             </div>
         </div>
+		<div class="modal fade" id="userNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Choose a Username (eg. Craig)</h5>
+					</div>
+					<div class="modal-body">
+						<form id="username-submit-form">
+							<div id="username-form-group" class="form-group">
+								<label for="recipient-name" class="form-control-label">Recipient:</label>
+								<input type="text" class="form-control" id="recipient-name">
+								<label class="username-error-msg"></label>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button id="userNameModalSubmitButton" type="button" class="btn btn-secondary">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
     </body>
 </html>

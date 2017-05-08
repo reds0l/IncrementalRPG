@@ -30,3 +30,11 @@
         transform: translateY(0) rotate(10deg);
     }
 }
+
+#username-form-group {
+    margin: 0;
+}
+
+.username-error-msg {
+    margin-top: 15px;
+}
