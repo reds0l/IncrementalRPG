@@ -233,7 +233,7 @@ function generateWeaponName() {
  */
 function generateEnemy() {
     // Reset enemy death if not reset
-    if ($(".dead-enemy").hasClass("dead-animate")) {
+    if ($('.dead-enemy').hasClass('dead-animate')) {
         resetEnemyDeath();
     }
     // Create new enemy and set it's stats based on GAME LEVEL
@@ -242,6 +242,9 @@ function generateEnemy() {
     updateView();
 }
 
+/**
+ * Decides if loot will drop or not
+ */
 function dropLoot() {
     let r = 100 * Math.random();
     if (r < LOOTCHANCE) {       // 40% chance for loot
@@ -278,6 +281,9 @@ function battleVictory() {
     updateLog('Craig defeated ' + enemy.name + '.');
 }
 
+/**
+ * Rests character restoring health to max (while not in combat)
+ */
 function restHero() {
     if (BATTLEFLAG) {
         updateLog('Cannot rest during combat.');
@@ -287,6 +293,10 @@ function restHero() {
     }
 }
 
+/**
+ * Equips the click upon weapon to the hero
+ * @param {object} e - e.target.id = weaponImg#
+ */
 function equipWeapon(e) {
     let weaponID = e.target.id.replace('weaponImg', '');
     let i;
@@ -405,6 +415,7 @@ function updateView() {
 
 /**
  * Updates log message
+ * @param {string} m - the message to display
  */
 function updateLog(m) {
     let logMessage = $('<p>' + m + '<p>');
@@ -437,16 +448,18 @@ function setup() {
 
 /**
  * Drops the enemy dead symbol
+ * @param {object} x - ?
  */
 function startEnemyDeath(x) {
-    $(".dead-enemy").addClass("dead-animate");
+    $('.dead-enemy').addClass('dead-animate');
 }
 
 /**
  * Reset enemy death
+ * @param {object} x - ?
  */
 function resetEnemyDeath(x) {
-    $(".dead-enemy").removeClass("dead-animate");
+    $('.dead-enemy').removeClass('dead-animate');
 }
 
 /**
