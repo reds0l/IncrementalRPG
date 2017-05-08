@@ -19,10 +19,13 @@
             <button id="btn2" class="w3-bar-item w3-button"> Find Enemy </button>
             <button id="btn3" class="w3-bar-item w3-button"> Start Battle </button>
             <button id="btn4" class="w3-bar-item w3-button"> Rest </button>
+
+            <input id="level" type="number" value="1" min="1" class="w3-teal w3-right">  </input>
+            <h4 id="level-text" class="w3-right"> Level: </h4>
         </header>
         <div class="w3-row">
             <div class="w3-quarter w3-padding">
-                <div id="inventory" class="w3-card-2 w3-container" style="min-height:460px">
+                <div id="inventory" class="w3-card-2 w3-container box" style="min-height:460px">
                     <div id="inventoryHeader">
                         <h3>Inventory:</h3>
                     </div>
@@ -31,7 +34,7 @@
                 </div>
             </div>
             <div class="w3-quarter w3-padding">
-                <div id="character" class="w3-card-2 w3-container" style="min-height:460px">
+                <div id="character" class="w3-card-2 w3-container box" style="min-height:460px">
                     <h3>Character</h3>
                     <p id="characterHealth">Health: ??/??</p>
                     <p id="characterLevel">Level: ??</p>
@@ -43,7 +46,7 @@
                 </div>
             </div>
             <div class="w3-quarter w3-padding">
-                <div id="enemy" class="w3-card-2 w3-container" style="min-height:460px">
+                <div id="enemy" class="w3-card-2 w3-container box" style="min-height:460px">
                     <h3>Enemy:</h3>
                     <p id="enemyName">Name: ?????</p>
                     <p id="enemyHealth">Health: ??/??</p>
@@ -53,7 +56,7 @@
                 <img class="dead-enemy" src="assets/dead.png" alt="">
             </div>
             <div class="w3-quarter w3-padding">
-                <div id="log" class="w3-card-2 w3-container log-box" style="min-height:460px">
+                <div id="log" class="w3-card-2 w3-container box" style="min-height:460px">
                     <div id="logHeader">
                         <h3>Log:</h3>
                     </div>
