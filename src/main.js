@@ -43,8 +43,8 @@ class Hero {
         this.level = 0;
         this.curXP = 0;
         this.maxXP = 2;
-        this.curHealth = 25;
-        this.maxHealth = 25;
+        this.curHealth = 15;
+        this.maxHealth = 15;
         this.defense = 5;
         this.weapon = generateWeapon();
     }
@@ -100,6 +100,7 @@ class Enemy {
      */
     constructor() {
         this.name = 'Rat';
+        this.level = 1;
         this.curHealth = 5;
         this.maxHealth = 5;
         this.defense = 1;
