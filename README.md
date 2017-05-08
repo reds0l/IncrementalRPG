@@ -2,7 +2,6 @@
 Incremental/Clicker RPG game
 
 ToDo:
-* Weapon levels (strong weapons from stronger enemies)
 * Save Game to browser (html5 webstorage maybe)
 * more...
 
@@ -17,4 +16,5 @@ Done:
 * Revival system for your hero (maybe items that drop from enemies or just a button you click)
 * Enemies Drop Loot
 * New weapons can be equipped
-
+* Weapon levels (strong weapons from stronger enemies)
+* Enemy levels (stronger enemies at higher levels)
