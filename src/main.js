@@ -43,27 +43,10 @@ class Hero {
         this.level = 0;
         this.curXP = 0;
         this.maxXP = 2;
-        this.curHealth = 15;
-        this.maxHealth = 15;
-        this.defense = 5;
-        this.weapon = generateWeapon();
-    }
-
-    /**
-     * Equip Weapon
-     * @param {Weapon} w - weapon to equip
-     */
-    equipWeapon() {
-        if (this.weapon instanceof Weapon) {
-            // put weapon back in inventory
-            // equip new weapon
-            console.log('Weapon detected. Replacing Weapon');
-            inventory.push(this.weapon);
-            this.weapon = w;
-        } else {
-            console.log('No weapon detected. Equiping Weapon');
-            this.weapon = w;
-        }
+        this.curHealth = 10;
+        this.maxHealth = 10;
+        this.defense = 3;
+        this.weapon = new Weapon(0, 'Stick', COMMON, 1);
     }
 
     /**
@@ -88,6 +71,7 @@ class Hero {
         updateLog('Level Up!');
         this.maxHealth = this.maxHealth + 4 * this.level;
         this.curHealth = this.maxHealth;
+        this.defense++;
     }
 }
 
@@ -134,7 +118,7 @@ class Enemy {
  * Section (#2): Global Variables
  * This section contains all Global Variables
  * The two important ones are the hero and enemy objects
- * These will constantly be updated as battles happen
+ * Some will constantly be updated as battles happen
  * *****************************************************
  */
 const COMMON = 'common';
@@ -142,15 +126,16 @@ const RARE = 'rare';
 const EPIC = 'epic';
 const LEGENDARY = 'legendary';
 
+const LOOTCHANCE = 40;
 /*
  * not sure if this is worth or not
-let game = {
-    globalID: 0,
-    battleFlag: false,
-    level: false,
-};
-*/
-let globalID = 0;           // Used to generate weapons with unique ids
+ let game = {
+ globalID: 0,
+ battleFlag: false,
+ level: false,
+ };
+ */
+let globalID = 1;           // Used to generate weapons with unique ids
 let BATTLEFLAG = false;
 let level = 1;
 let inventory = [];
@@ -172,9 +157,9 @@ let enemy = new Enemy();    // enemy character
 function startBattle() {
     if (isDead(enemy)) {
         updateLog('You pummel your fallen foe,'
-                + ' but there is nothing more to gain');
+                + ' but there is nothing more to gain.');
     } else if (isDead(hero)) {
-        updateLog('You have no strength left to battle');
+        updateLog('You have no strength left to battle.');
     } else {
         BATTLEFLAG = true;
     }
@@ -248,17 +233,30 @@ function generateWeaponName() {
  */
 function generateEnemy() {
     // Reset enemy death if not reset
-    if ($(".dead-enemy").hasClass("dead-animate")) {
+    if ($('.dead-enemy').hasClass('dead-animate')) {
         resetEnemyDeath();
     }
     // Create new enemy and set it's stats based on GAME LEVEL
     enemy = new Enemy();
-    enemy.setStats(5*level, 5*level, 1*level, 3*level);
+    enemy.setStats(4*level, 4*level, 1*level, 3*level);
+    updateView();
+}
+
+/**
+ * Decides if loot will drop or not
+ */
+function dropLoot() {
+    let r = 100 * Math.random();
+    if (r < LOOTCHANCE) {       // 40% chance for loot
+        console.log('Dropping Loot');
+        let w = generateWeapon();
+        inventory.push(w);
+    }
 }
 
 /**
  * Check if a character is dead
- * @param {Character} x - any character
+ * @param {Character} x - any character (hero or enemy class)
  * @return {boolean}
  */
 function isDead(x) {
@@ -274,13 +272,50 @@ function isDead(x) {
  */
 function battleVictory() {
     console.log('Victory');
-    // give hero xp (eventually replace with hero class xp function)
-    let xp = Math.trunc((Math.random() * 2) + 1);
+    dropLoot();
+    let xp = Math.trunc((Math.random() * 2 * level) + 1);
     hero.updateXP(xp);
 
     // update the log
     updateLog('Gained: ' + xp + 'xp');
     updateLog('Craig defeated ' + enemy.name + '.');
+}
+
+/**
+ * Rests character restoring health to max (while not in combat)
+ */
+function restHero() {
+    if (BATTLEFLAG) {
+        updateLog('Cannot rest during combat.');
+    } else {
+        updateLog('Resting.');
+        hero.curHealth = hero.maxHealth;
+    }
+}
+
+/**
+ * Equips the click upon weapon to the hero
+ * @param {object} e - e.target.id = weaponImg#
+ */
+function equipWeapon(e) {
+    let weaponID = e.target.id.replace('weaponImg', '');
+    let i;
+    for (i=0; i<inventory.length; i++) {
+        if (inventory[i].id == weaponID) {
+            if (hero.weapon instanceof Weapon) {
+                // put weapon back in inventory
+                // equip new weapon
+                console.log('Weapon detected. Replacing Weapon');
+                let temp = inventory[i];
+                inventory[i] = hero.weapon;
+                hero.weapon = temp;
+            } else {
+                console.log('No weapon detected. Equiping Weapon');
+                hero.weapon = inventory[i];
+            }
+        }
+    }
+    updateView();
 }
 
 /**
@@ -351,28 +386,36 @@ function updateView() {
     // Update inventory view info
     let i;
     let item;
+    let img;
     let div;
     let p1;
     let p2;
     let p3;
-    let header = $('<h3>Inventory:</h3>');
-    $('#inventory').empty();
-    $('#inventory').append(header);
+    $('#inventoryBody').empty();
     for (i = 0; i < inventory.length; i++) {
         item = inventory[i];
         div = $('<div id="weapon' + item.id + '"> </div>)');
-        $('#inventory').append(div);
-        p1 = $('<p>' + item.title + '</p>');
-        p2 = $('<p>' + item.rarity + '</p>');
-        p3 = $('<p>' + item.attack + '</p>');
-        $('#inventory').append(p1);
-        $('#inventory').append(p2);
-        $('#inventory').append(p3);
+        $('#inventoryBody').prepend(div);
+        img = $('<img src="assets/katana.png" id="weaponImg' + item.id
+                + '" class="inv-img w3-round w3-hover-opacity">');
+        p1 = $('<p class="inv-text"> Name: '
+                + item.title + '<br></p>');
+        p2 = $('<p class="inv-text"> Rarity: '
+                + item.rarity + '<br></p>');
+        p3 = $('<p class="inv-text"> Attack: '
+                + item.attack + '<br></p>');
+        $('#weapon'+item.id).append(img);
+        $('#weapon'+item.id).append(p1);
+        $('#weapon'+item.id).append(p2);
+        $('#weapon'+item.id).append(p3);
+
+        $('#weaponImg'+item.id).click(equipWeapon);
     }
 }
 
 /**
  * Updates log message
+ * @param {string} m - the message to display
  */
 function updateLog(m) {
     let logMessage = $('<p>' + m + '<p>');
@@ -395,29 +438,28 @@ function setup() {
     console.log('Info: Setting up Game');
 
     // sets initial enemy stats
-    enemy.setStats(10, 10, 1, null);
+    enemy.setStats(4, 4, 3, 1);
 
     // sets up some buttons
-    $('#btn1').click(generateWeapon);
     $('#btn2').click(generateEnemy);
     $('#btn3').click(startBattle);
-
-    // adds random weapon to inventory
-    inventory.push(generateWeapon());
+    $('#btn4').click(restHero);
 }
 
 /**
  * Drops the enemy dead symbol
+ * @param {object} x - ?
  */
 function startEnemyDeath(x) {
-    $(".dead-enemy").addClass("dead-animate");
+    $('.dead-enemy').addClass('dead-animate');
 }
 
 /**
  * Reset enemy death
+ * @param {object} x - ?
  */
 function resetEnemyDeath(x) {
-    $(".dead-enemy").removeClass("dead-animate");
+    $('.dead-enemy').removeClass('dead-animate');
 }
 
 /**

@@ -15,6 +15,26 @@
     transform: rotate(180deg);
 }
 
+.inv-img {
+    float: left;
+    width: 64px;
+    height: 64px;
+    margin-right: 10px;
+}
+
+.inv-text {
+    font-size: 12px;
+    margin: 5px;
+}
+.inv-item {
+    width: 100%;
+}
+
+.log-box {
+    height: 450px;
+    overflow: scroll;
+}
+
 #enemy {
     position: absolute;
 }
