@@ -71,7 +71,7 @@ class Hero {
         updateLog('Level Up!');
         this.maxHealth = this.maxHealth + 4 * this.level;
         this.curHealth = this.maxHealth;
-        this.defense++;
+        this.defense = this.defense + level;
     }
 }
 
@@ -112,6 +112,14 @@ class Enemy {
             this.attack = attack;
         }
     }
+
+    /**
+     * set name for this enemy
+     * @param {string} n - name
+     */
+    setName(n) {
+        this.name = n;
+    }
 }
 /**
  * *****************************************************
@@ -127,6 +135,7 @@ const EPIC = 'epic';
 const LEGENDARY = 'legendary';
 
 const LOOTCHANCE = 40;
+const SPEEDUP = 2;
 /*
  * not sure if this is worth or not
  let game = {
@@ -192,9 +201,9 @@ function generateRarity() {
         return COMMON;
     } else if (r >= 750 && r < 950) {   // 20% chance for rare
         return RARE;
-    } else if (r >= 950 && r < 999) {   // 4.9% chance for epic
+    } else if (r >= 950 && r < 995) {   // 4.5% chance for epic
         return EPIC;
-    } else if (r >= 999 && r <= 1000) { // .1% chance for legendary
+    } else if (r >= 995 && r <= 1000) { // .5% chance for legendary
         return LEGENDARY;
     }
 }
@@ -216,7 +225,7 @@ function generateAttack(rarity) {
     } else if (rarity === LEGENDARY) {
         mod = 5;
     }
-    attack = Math.trunc(((Math.random() * 3) + 3) * mod);
+    attack = Math.trunc(((Math.random() * 3) + 3) * mod * level);
     return attack;
 }
 
@@ -225,7 +234,11 @@ function generateAttack(rarity) {
  * @return {string}
  */
 function generateWeaponName() {
-    return 'Iron Sword';
+    let metals = ['Iron', 'Steel', 'Copper', 'Bronze', 'Stone'];
+    let wpns = ['Sword', 'Blade', 'Longsword', 'Dagger', 'Knife'];
+    let wpn = wpns[Math.floor(Math.random() * metals.length)];
+    let metal = metals[Math.floor(Math.random() * wpns.length)];
+    return metal + ' ' + wpn + ' (lvl ' + level + ')';
 }
 
 /**
@@ -238,8 +251,33 @@ function generateEnemy() {
     }
     // Create new enemy and set it's stats based on GAME LEVEL
     enemy = new Enemy();
-    enemy.setStats(4*level, 4*level, 1*level, 3*level);
+    let stats = generateEnemyStats();
+    enemy.setStats(stats.health, stats.health, stats.defense, stats.attack);
+    enemy.setName(generateEnemyName());
     updateView();
+}
+
+/**
+ * Generates enemy name
+ * @return {string}
+ */
+function generateEnemyName() {
+    let names = ['Rat', 'Skeleton', 'Wolf', 'Ooze', 'Rock Monster'];
+    let name = names[Math.floor(Math.random() * names.length)];
+    return name;
+}
+
+/**
+ * Generates enemy name
+ * @return {object}
+ */
+function generateEnemyStats() {
+    let s = {
+        health: (Math.trunc(Math.random() * 2 * level)) + 5 * level,
+        attack: (Math.trunc(Math.random() * 2 * level)) + 3 * level,
+        defense: (Math.trunc(Math.random() * 2 * level)) + level,
+    };
+    return s;
 }
 
 /**
@@ -423,6 +461,13 @@ function updateLog(m) {
 }
 
 /**
+ * Updates level
+ */
+function updateLevel() {
+    level = parseInt($('#level').val());
+}
+
+/**
  * Updates stuff
  */
 function update() {
@@ -444,6 +489,7 @@ function setup() {
     $('#btn2').click(generateEnemy);
     $('#btn3').click(startBattle);
     $('#btn4').click(restHero);
+    $('#level').on('input', updateLevel);
 }
 
 /**
@@ -480,7 +526,7 @@ function handleUsernameSubmit() {
         modal.modal("hide");
         console.log('Info: Starting Game');
         setup();
-        setInterval(update, 1000);
+        setInterval(update, 1000/SPEEDUP);
     }
 }
 
