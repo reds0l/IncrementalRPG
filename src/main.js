@@ -23,11 +23,12 @@ class Weapon {
      * @param {string} rarity - rarity of the weapon
      * @param {int} attack - attack value of the weapon
      */
-    constructor(id, title, rarity, attack) {
+    constructor(id, title, rarity, attack, image) {
         this.id = id;
         this.title = title;
         this.rarity = rarity;
         this.attack = attack;
+        this.img = image;
     }
 }
 
@@ -46,7 +47,7 @@ class Hero {
         this.curHealth = 10;
         this.maxHealth = 10;
         this.defense = 3;
-        this.weapon = new Weapon(0, 'Stick', COMMON, 1);
+        this.weapon = new Weapon(0, 'Stick', COMMON, 1, 'katana.png');
     }
 
     /**
@@ -71,7 +72,7 @@ class Hero {
         updateLog('Level Up!');
         this.maxHealth = this.maxHealth + 4 * this.level;
         this.curHealth = this.maxHealth;
-        this.defense = this.defense + level;
+        this.defense = this.defense + this.level;
     }
 }
 
@@ -181,12 +182,13 @@ function startBattle() {
 function generateWeapon() {
     let id = globalID;
     let title = generateWeaponName();
+    let img = generateWeaponImg();
     let rarity = generateRarity();
     let attack = generateAttack(rarity);
     console.log('name: ' + title);
     console.log('rarity: ' + rarity);
     console.log('attack: ' + attack);
-    let w = new Weapon(id, title, rarity, attack);
+    let w = new Weapon(id, title, rarity, attack, img);
     globalID++;
     return w;
 }
@@ -239,6 +241,17 @@ function generateWeaponName() {
     let wpn = wpns[Math.floor(Math.random() * metals.length)];
     let metal = metals[Math.floor(Math.random() * wpns.length)];
     return metal + ' ' + wpn + ' (lvl ' + level + ')';
+}
+
+/**
+ * Generates name for weapon
+ * @return {string}
+ */
+function generateWeaponImg() {
+    let imgs = ['broad-dagger.png', 'broadsword.png', 'katana.png',
+    'shard-sword.png', 'stiletto.png', 'two-handed-sword.png'];
+    let img = imgs[Math.floor(Math.random() * imgs.length)];
+    return img;
 }
 
 /**
@@ -311,7 +324,7 @@ function isDead(x) {
 function battleVictory() {
     console.log('Victory');
     dropLoot();
-    let xp = Math.trunc((Math.random() * 2 * level) + 1);
+    let xp = Math.trunc((Math.random() * level) + level);
     hero.updateXP(xp);
 
     // update the log
@@ -434,7 +447,7 @@ function updateView() {
         item = inventory[i];
         div = $('<div id="weapon' + item.id + '"> </div>)');
         $('#inventoryBody').prepend(div);
-        img = $('<img src="assets/katana.png" id="weaponImg' + item.id
+        img = $('<img src="assets/' + item.img + '" id="weaponImg' + item.id
                 + '" class="inv-img w3-round w3-hover-opacity">');
         p1 = $('<p class="inv-text"> Name: '
                 + item.title + '<br></p>');
