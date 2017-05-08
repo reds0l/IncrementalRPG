@@ -39,7 +39,7 @@ class Hero {
      * Constructor
      */
     constructor() {
-        this.name = '';
+        this.name = 'Craig';
         this.level = 0;
         this.curXP = 0;
         this.maxXP = 2;
@@ -73,7 +73,6 @@ class Hero {
     updateXP(xp) {
         this.curXP = this.curXP + xp;
         if (this.curXP >= this.maxXP) {
-            console.log('Level Up');
             this.curXP = 0;
             this.maxXP = this.maxXP * 2;
             this.levelUp();
@@ -85,6 +84,8 @@ class Hero {
      */
     levelUp() {
         this.level++;
+        console.log('Level Up');
+        updateLog('Level Up!');
         this.maxHealth = this.maxHealth + 4 * this.level;
         this.curHealth = this.maxHealth;
     }
@@ -98,7 +99,7 @@ class Enemy {
      * Constructor
      */
     constructor() {
-        this.name = '';
+        this.name = 'Rat';
         this.curHealth = 5;
         this.maxHealth = 5;
         this.defense = 1;
@@ -168,8 +169,14 @@ let enemy = new Enemy();    // enemy character
  * sets Battleflag to true
  */
 function startBattle() {
-    BATTLEFLAG = true;
-
+    if (isDead(enemy)) {
+        updateLog('You pummel your fallen foe,'
+                + ' but there is nothing more to gain');
+    } else if (isDead(hero)) {
+        updateLog('You have no strength left to battle');
+    } else {
+        BATTLEFLAG = true;
+    }
 }
 
 /**
@@ -232,7 +239,7 @@ function generateAttack(rarity) {
  * @return {string}
  */
 function generateWeaponName() {
-    return 'iron sword';
+    return 'Iron Sword';
 }
 
 /**
@@ -243,6 +250,7 @@ function generateEnemy() {
     if ($(".dead-enemy").hasClass("dead-animate")) {
         resetEnemyDeath();
     }
+    // Create new enemy and set it's stats based on GAME LEVEL
     enemy = new Enemy();
     enemy.setStats(5*level, 5*level, 1*level, 3*level);
 }
@@ -265,10 +273,13 @@ function isDead(x) {
  */
 function battleVictory() {
     console.log('Victory');
-    let xp = Math.trunc((Math.random() * 2) + 1);
-    console.log('Gain: ' + xp + 'xp');
     // give hero xp (eventually replace with hero class xp function)
+    let xp = Math.trunc((Math.random() * 2) + 1);
     hero.updateXP(xp);
+
+    // update the log
+    updateLog('Gained: ' + xp + 'xp');
+    updateLog('Craig defeated ' + enemy.name + '.');
 }
 
 /**
@@ -330,6 +341,7 @@ function updateView() {
             startEnemyDeath();
         }
     }
+    $('#enemyName').html('Name: ' + enemy.name);
     $('#enemyHealth').html('Health: ' + enemy.curHealth + '/'
             + enemy.maxHealth);
     $('#enemyAttack').html('Attack: ' + enemy.attack);
@@ -356,6 +368,14 @@ function updateView() {
         $('#inventory').append(p2);
         $('#inventory').append(p3);
     }
+}
+
+/**
+ * Updates log message
+ */
+function updateLog(m) {
+    let logMessage = $('<p>' + m + '<p>');
+    $('#logBody').prepend(logMessage);
 }
 
 /**
@@ -410,5 +430,4 @@ $(document).ready(function() {
     console.log('Info: Starting Game');
     setup();
     setInterval(update, 1000);
-
 });
