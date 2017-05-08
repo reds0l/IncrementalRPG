@@ -149,12 +149,12 @@ let game = {
     level: false,
 };
 */
-let globalID = 0;               // Used to generate weapons with unique ids
+let globalID = 0;           // Used to generate weapons with unique ids
 let BATTLEFLAG = false;
 let level = 1;
 let inventory = [];
 
-let hero = new Hero();     // hero character
+let hero = new Hero();      // hero character
 let enemy = new Enemy();    // enemy character
 
 /**
@@ -202,13 +202,13 @@ function generateWeapon() {
  */
 function generateRarity() {
     let r = 1000 * Math.random();
-    if (r < 800) {
+    if (r < 750) {                      // 75% chance for common
         return COMMON;
-    } else if (r >= 800 && r < 950) {
+    } else if (r >= 750 && r < 950) {   // 20% chance for rare
         return RARE;
-    } else if (r >= 950 && r < 999) {
+    } else if (r >= 950 && r < 999) {   // 4.9% chance for epic
         return EPIC;
-    } else if (r >= 999 && r <= 1000) {
+    } else if (r >= 999 && r <= 1000) { // .1% chance for legendary
         return LEGENDARY;
     }
 }
