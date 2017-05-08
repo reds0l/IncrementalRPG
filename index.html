@@ -14,11 +14,16 @@
             <button id="btn1" class="w3-bar-item w3-button"> + </button>
             <button id="btn2" class="w3-bar-item w3-button"> Find Enemy </button>
             <button id="btn3" class="w3-bar-item w3-button"> Start Battle </button>
+            <button id="btn4" class="w3-bar-item w3-button"> Rest </button>
         </header>
         <div class="w3-row">
             <div class="w3-quarter w3-padding">
                 <div id="inventory" class="w3-card-2 w3-container" style="min-height:460px">
-                    <h3>Inventory:</h3>
+                    <div id="inventoryHeader">
+                        <h3>Inventory:</h3>
+                    </div>
+                    <div id="inventoryBody">
+                    </div>
                 </div>
             </div>
             <div class="w3-quarter w3-padding">
@@ -44,7 +49,7 @@
                 <img class="dead-enemy" src="assets/dead.png" alt="">
             </div>
             <div class="w3-quarter w3-padding">
-                <div id="log" class="w3-card-2 w3-container" style="min-height:460px">
+                <div id="log" class="w3-card-2 w3-container log-box" style="min-height:460px">
                     <div id="logHeader">
                         <h3>Log:</h3>
                     </div>
