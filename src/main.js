@@ -412,6 +412,7 @@ function updateCharacter() {
  */
 function updateView() {
     // Update character view info
+    $('#characterName').html('Name: ' + hero.name);
     $('#characterHealth').html('Health: ' + hero.curHealth + '/'
             + hero.maxHealth);
     $('#characterLevel').html('Level: ' + hero.level);
